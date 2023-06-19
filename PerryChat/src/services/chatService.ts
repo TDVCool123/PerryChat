@@ -13,6 +13,7 @@ export const postMessage= async (message: string) => {
         const docRef = await addDoc(collection(firebaseDb, "chat"), {
             message: message,
             createdDate: new Date(),
+            userName: localStorage.getItem("username")
         });
         console.log("Document written with ID: ", docRef.id);
     } catch (e) {

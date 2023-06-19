@@ -1,6 +1,8 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Chat } from './pages/Chat'
 import { getMessages } from './services/chatService';
+import LoginForm from './pages/LoginPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -9,6 +11,10 @@ function App() {
       element: <Chat/>,
     
     },
+    {
+      path:"/",
+      element: <LoginPage/>
+    }
   ]);
   
   return (
