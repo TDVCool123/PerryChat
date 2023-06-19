@@ -1,15 +1,37 @@
-import { FormControl, InputLabel, OutlinedInput, InputAdornment, Button } from '@mui/material'
-import React from 'react'
+import { FormControl, InputLabel, OutlinedInput, InputAdornment, Button, TextField, Box } from '@mui/material'
+import React, { useState } from 'react'
+import { postMessage } from '../services/chatService'
+import SendIcon from "@mui/icons-material/Send";
+import { Imessage } from '../models/chatBox';
 
 export const Input = () => {
-  return (
-    <FormControl fullWidth sx={{ m: 1 }}>
-    <InputLabel htmlFor="outlined-adornment-chat">Chat:</InputLabel>
-    <OutlinedInput
-      id="outlined-adornment-chat"
-      label="chat"
-    />
-    <Button variant="contained">Contained</Button>
+  const [message,setMessage] = useState<string>("");
+  const handleSend = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    postMessage(message)
+    setMessage("");
+  };
 
-  </FormControl>  )
+  return (
+    <Box display="flex" alignItems="center" component="form" onSubmit={handleSend}>
+        <TextField
+          fullWidth
+          label="Type your message"
+          value={message}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setMessage(e.target.value)
+          }
+          autoFocus
+        />
+        <Button
+          variant="contained"
+          color="secondary"
+          type="submit"
+          disabled={!message.trim()}
+          sx={{ height: "100%" }}
+          endIcon={<SendIcon />}
+        >
+          Send
+        </Button>
+      </Box> )
 }
