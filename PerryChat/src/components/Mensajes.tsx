@@ -1,20 +1,25 @@
 import { Box } from '@mui/material'
-import React, { useEffect, useRef, useState } from 'react'
+import  { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { Imessage } from '../models/chatBox';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { firebaseDb } from '../services/instance';
 
-export const Mensajes = () => {
+const Mensajes = () => {
 const [messages,setMessages] = useState<Imessage[]>([]); 
 const bottomRef = useRef<null | HTMLDivElement>(null);
+
+const tamaño = useMemo(() => {
+  return messages.length;
+}, [messages]);
+console.log("El numero de mensajes total es: ",tamaño);
 
 function getMessage() {
     const queryChat = query(
       collection(firebaseDb, "chat"),
       orderBy("createdDate", "asc")
     );
-    
-    const unsubscribe = onSnapshot(queryChat, (querySnapshot) => {
+
+     onSnapshot(queryChat, (querySnapshot) => {
       const messages: Imessage[] = [];
       querySnapshot.forEach((doc) => {
         messages.push({
@@ -69,7 +74,7 @@ return (
               {m.userName} - {m.createdDate.toLocaleString()}
             </Box>
 
-            {m.message}
+            { m.message}
             
           </Box>
         ))}
@@ -78,3 +83,5 @@ return (
    
   )
 }
+
+export default memo(Mensajes);

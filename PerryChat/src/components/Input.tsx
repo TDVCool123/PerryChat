@@ -1,8 +1,7 @@
-import { FormControl, InputLabel, OutlinedInput, InputAdornment, Button, TextField, Box } from '@mui/material'
+import {  Button, TextField, Box } from '@mui/material'
 import React, { useState } from 'react'
 import { postMessage } from '../services/chatService'
 import SendIcon from "@mui/icons-material/Send";
-import { Imessage } from '../models/chatBox';
 
 export const Input = () => {
   const [message,setMessage] = useState<string>("");
