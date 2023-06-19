@@ -13,6 +13,7 @@ function getMessage() {
       collection(firebaseDb, "chat"),
       orderBy("createdDate", "asc")
     );
+    
     const unsubscribe = onSnapshot(queryChat, (querySnapshot) => {
       const messages: Imessage[] = [];
       querySnapshot.forEach((doc) => {
@@ -20,6 +21,7 @@ function getMessage() {
           id: doc.id,
           message: doc.data().message,
           createdDate: new Date(doc.data().createdDate.seconds * 1000),
+          userName: doc.data().userName||"noName"
         });
       });
       console.log(messages);
@@ -37,23 +39,15 @@ function getMessage() {
 
 
 return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      height="90vh"
-      p={2}
-      pb={0}
-      
-    >
-      <Box display="flex" flexDirection="column" overflow="auto">
+    
+      <Box display="flex" flexDirection="column" overflow="scroll">
         {messages.map((m, id) => (
           <Box
             key={id}
             alignSelf={"flex-start"}
             color="white"
             bgcolor="green"
-            py={5}
+            py={2}
             px={2}
             borderRadius={"16px 16px 16px 0px"}
             my={1}
@@ -63,22 +57,24 @@ return (
             fontSize={20}
             flexDirection={"column"}
           >
-            {m.message}
+            
             <Box
               display="flex"
-              lineHeight={1}
-              justifyContent="flex-end"
+              justifyContent="flex-start"
               alignItems="center"
               fontSize={12}
               fontFamily={"Roboto"}
               color="white"
             >
-              {m.createdDate.toLocaleString()}
+              {m.userName} - {m.createdDate.toLocaleString()}
             </Box>
+
+            {m.message}
+            
           </Box>
         ))}
         <div ref={bottomRef} />
       </Box>
-    </Box>
+   
   )
 }
